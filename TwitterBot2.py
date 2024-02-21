@@ -3,7 +3,7 @@ import requests
 from datetime import datetime
 from dotenv import load_dotenv
 from PIL import Image, ImageDraw, ImageFont
-from requests_oauthlib import OAuth1Session  # Asegúrate de haber instalado requests_oauthlib
+from requests_oauthlib import OAuth1Session  
 
 # Carga las variables de entorno desde el archivo .env
 load_dotenv()
@@ -19,7 +19,7 @@ headers = {
     "Authorization": f"Bearer {bearer_token}"
 }
 
-#------------------------------------------------------------------------------------ Creacion de la ProgressBar ----------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------- Creacion de la ProgressBar -------------------------------------------------------------------------------------------------------------
 
 def crear_barra_de_carga(porcentaje, ancho=1024, alto=576, color_fondo=(0, 0, 0), color_barra=(76, 175, 80), color_fondo_barra=(50, 50, 50), color_borde=(3, 14, 84)):
     imagen = Image.new('RGB', (ancho, alto), color_fondo)
@@ -44,7 +44,7 @@ def crear_barra_de_carga(porcentaje, ancho=1024, alto=576, color_fondo=(0, 0, 0)
 
     # Cargar la fuente
     try:
-        fuente= ImageFont.truetype('./Resources/Fonts/ProtestRevolution-Regular.ttf', int(alto_barra * 0.6))
+        fuente= ImageFont.truetype('./Resources/Fonts/ProtestRevolution-Regular.ttf', int(alto_barra * 0.7))
         #fuente = ImageFont.truetype("arial.ttf", int(alto_barra * 0.5))  # Ajustar el tamaño de la fuente al 50% de la altura de la barra
     except IOError:
         print("No se pudo cargar la fuente personalizada. Usando la predeterminada.")
@@ -77,7 +77,22 @@ def calcular_porcentaje_transcurrido():
 
     return int(round(percentage_passed))
 
-#------------------------------------------------------------------------------------ Llamado a la API de twitter ----------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------  Manejo de archivos para guardar y leer el último porcentaje procesado ----------------------------------------------------------------------------------------------
+
+# Guardamos el ultimo porcentaje del año guardado para que el tweet solo se envie cuando el porcentaje cambia.
+def guardar_ultimo_porcentaje(porcentaje):
+    with open('ultimo_porcentaje.txt', 'w') as file:
+        file.write(str(porcentaje))
+
+# Función para leer el último porcentaje procesado
+def leer_ultimo_porcentaje():
+    if not os.path.isfile('ultimo_porcentaje.txt'):
+        return None
+    with open('ultimo_porcentaje.txt', 'r') as file:
+        return int(file.read())
+
+
+#------------------------------------------------------------------------------------ Llamado a la API de twitter ----------------------------------------------------------------------------------------------------------------------------
 
 def upload_media_to_twitter(file_path):
     # Utiliza las variables de autenticación correctas
@@ -108,11 +123,28 @@ def tweet_with_media(media_id, text):
     else:
         raise Exception(f"Failed to post tweet: {response.status_code} {response.text}")
 
+
+#--------------------------------------------------------------------------------------------------- MAIN -------------------------------------------------------------------------------------------------------------------------------------------
+
 try:
+    # Calcula el porcentaje transcurrido del año actual
     porcentaje_transcurrido = calcular_porcentaje_transcurrido()
-    image_path = crear_barra_de_carga(porcentaje_transcurrido)
-    media_id = upload_media_to_twitter(image_path)
-    tweet_text = "2024 Completado en un ↓"
-    tweet_with_media(media_id, tweet_text)
+    # Lee el último porcentaje guardado
+    porcentaje_ultimo = leer_ultimo_porcentaje()
+    # Comprueba si el porcentaje ha cambiado desde la última vez
+    if porcentaje_transcurrido != porcentaje_ultimo:
+        # Si ha cambiado, crea la imagen de la barra de carga
+        image_path = crear_barra_de_carga(porcentaje_transcurrido)
+        # Sube la imagen a Twitter
+        media_id = upload_media_to_twitter(image_path)
+        # Define el texto del tweet
+        tweet_text = f"2024 Completado en un ↓"
+        # Publica el tweet con la imagen
+        tweet_with_media(media_id, tweet_text)
+        # Guarda el nuevo porcentaje como el último procesado
+        guardar_ultimo_porcentaje(porcentaje_transcurrido)
+    else:
+        # Si el porcentaje no ha cambiado, cancela la ejecución para no subir imagenes repetidas
+        print("El porcentaje no ha cambiado desde la última ejecución.")
 except Exception as e:
     print(e)
