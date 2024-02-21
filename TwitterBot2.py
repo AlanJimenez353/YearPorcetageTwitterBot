@@ -19,6 +19,8 @@ headers = {
     "Authorization": f"Bearer {bearer_token}"
 }
 
+#------------------------------------------------------------------------------------ Creacion de la ProgressBar ----------------------------------------------------------------------------------------------
+
 def crear_barra_de_carga(porcentaje, ancho=1024, alto=576, color_fondo=(0, 0, 0), color_barra=(76, 175, 80), color_fondo_barra=(50, 50, 50), color_borde=(3, 14, 84)):
     imagen = Image.new('RGB', (ancho, alto), color_fondo)
     dibujo = ImageDraw.Draw(imagen)
@@ -42,7 +44,8 @@ def crear_barra_de_carga(porcentaje, ancho=1024, alto=576, color_fondo=(0, 0, 0)
 
     # Cargar la fuente
     try:
-        fuente = ImageFont.truetype("arial.ttf", int(alto_barra * 0.5))  # Ajustar el tamaño de la fuente al 50% de la altura de la barra
+        fuente= ImageFont.truetype('./Resources/Fonts/ProtestRevolution-Regular.ttf', int(alto_barra * 0.6))
+        #fuente = ImageFont.truetype("arial.ttf", int(alto_barra * 0.5))  # Ajustar el tamaño de la fuente al 50% de la altura de la barra
     except IOError:
         print("No se pudo cargar la fuente personalizada. Usando la predeterminada.")
         fuente = ImageFont.load_default()
@@ -74,17 +77,7 @@ def calcular_porcentaje_transcurrido():
 
     return int(round(percentage_passed))
 
-
-
-
-
-
-
-
-
-
-
-
+#------------------------------------------------------------------------------------ Llamado a la API de twitter ----------------------------------------------------------------------------------------------
 
 def upload_media_to_twitter(file_path):
     # Utiliza las variables de autenticación correctas
@@ -119,7 +112,7 @@ try:
     porcentaje_transcurrido = calcular_porcentaje_transcurrido()
     image_path = crear_barra_de_carga(porcentaje_transcurrido)
     media_id = upload_media_to_twitter(image_path)
-    tweet_text = "Porcentaje del año transcurrido"
+    tweet_text = "2024 Completado en un ↓"
     tweet_with_media(media_id, tweet_text)
 except Exception as e:
     print(e)
