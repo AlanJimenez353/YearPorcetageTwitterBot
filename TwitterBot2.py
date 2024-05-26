@@ -58,8 +58,17 @@ def crear_barra_de_carga(porcentaje, ancho=1024, alto=576, color_fondo=(0, 0, 0)
     dibujo.text((posicion_x_texto, posicion_y_texto), texto, fill="white", font=fuente)
 
     # Guardar la imagen con el nombre de archivo correspondiente al porcentaje
+    
+    # Crear la ruta completa del directorio donde se guardan las imagenes
+    directorio = os.path.join(os.getcwd(), "Resources", "Images")
+    # Crear el directorio si no existe
+    if not os.path.exists(directorio):
+        os.makedirs(directorio)
+
+
     nombre_archivo = f"barra_de_carga_{porcentaje}.png"
-    imagen.save(nombre_archivo)
+    ruta_completa = os.path.join(directorio, nombre_archivo)
+    imagen.save(ruta_completa)
     print(f"Imagen guardada como {nombre_archivo}")
     return nombre_archivo  # Asegurarse de devolver el nombre del archivo
 
