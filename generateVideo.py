@@ -1,5 +1,5 @@
 import os
-from moviepy.editor import ImageSequenceClip, concatenate_videoclips
+from moviepy.editor import ImageSequenceClip, concatenate_videoclips, AudioFileClip, CompositeAudioClip
 
 def leer_ultimo_porcentaje(archivo):
     if not os.path.exists(archivo):
@@ -24,7 +24,7 @@ def calcular_duraciones_progresivas(num_imagenes, duracion_inicial, duracion_fin
         duraciones.append(duracion)
     return duraciones
 
-def crear_video_barra_progreso(directorio_imagenes, archivo_porcentaje, archivo_salida_base, duracion_inicial=0.05, duracion_final=0.3, fps=24):
+def crear_video_barra_progreso(directorio_imagenes, archivo_porcentaje, archivo_salida_base, archivo_audio, duracion_inicial=0.05, duracion_final=0.3, fps=24):
     # Leer el último porcentaje del archivo
     print(f"Archivo porcentaje: {archivo_porcentaje}")
     ultimo_porcentaje = leer_ultimo_porcentaje(archivo_porcentaje)
@@ -47,6 +47,16 @@ def crear_video_barra_progreso(directorio_imagenes, archivo_porcentaje, archivo_
     # Concatenar los clips
     final_clip = concatenate_videoclips(clips, method="compose")
     
+    # Agregar el audio
+    if os.path.exists(archivo_audio):
+        audio_clip = AudioFileClip(archivo_audio)
+        audio_duration = audio_clip.duration
+        audio_clips = [audio_clip.set_start(sum(duraciones[:i])) for i in range(len(duraciones))]
+        concatenated_audio = CompositeAudioClip(audio_clips)
+        final_clip = final_clip.set_audio(concatenated_audio)
+    else:
+        print(f"El archivo de audio {archivo_audio} no existe.")
+    
     # Crear el nombre del archivo de salida incluyendo el último porcentaje
     archivo_salida = f"{archivo_salida_base}_{ultimo_porcentaje}.mp4"
     
@@ -66,5 +76,8 @@ archivo_porcentaje = os.path.join("C:\\Users\\Alan\\Desktop\\TwitterBot", "ultim
 directorio_videos = os.path.join(os.getcwd(), "Resources", "videos")
 archivo_salida_base = os.path.join(directorio_videos, "barra_progreso")
 
+# Ruta al archivo de audio para la transición
+archivo_audio = os.path.join("C:\\Users\\Alan\\Desktop\\TwitterBot\\Resources\\Sounds", "67610__qubodup__metal_click_6.flac")
+
 # Crear el video
-crear_video_barra_progreso(directorio_imagenes, archivo_porcentaje, archivo_salida_base)
+crear_video_barra_progreso(directorio_imagenes, archivo_porcentaje, archivo_salida_base, archivo_audio)
