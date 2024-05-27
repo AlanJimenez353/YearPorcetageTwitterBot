@@ -10,21 +10,34 @@ def leer_ultimo_porcentaje(archivo):
     with open(archivo, 'r') as file:
         return int(file.read().strip())
 
-def calcular_duraciones_progresivas(num_imagenes, duracion_inicial, duracion_final):
+def calcular_duraciones_progresivas(num_imagenes, duracion_total, num_lentas=8):
     """
-    Calcula una lista de duraciones progresivas para cada frame, desde duracion_inicial hasta duracion_final.
+    Calcula una lista de duraciones para cada frame, con las primeras imágenes pasando rápido y las últimas num_lentas imágenes más lentamente.
     """
-    duraciones = []
-    if num_imagenes > 1:
-        incremento = (duracion_final - duracion_inicial) / (num_imagenes - 1)
-    else:
-        incremento = 0
-    for i in range(num_imagenes):
-        duracion = duracion_inicial + i * incremento
-        duraciones.append(duracion)
+    if num_imagenes <= 0:
+        return []
+
+    num_lentas = min(num_lentas, num_imagenes)
+    num_rapidas = num_imagenes - num_lentas
+
+    # Duración total de las imágenes rápidas y lentas
+    duracion_rapida_total = duracion_total * 0.5
+    duracion_lenta_total = duracion_total * 0.5
+
+    # Duraciones para imágenes rápidas
+    duracion_rapida_por_imagen = duracion_rapida_total / max(1, num_rapidas)
+    duraciones_rapidas = [duracion_rapida_por_imagen] * num_rapidas
+
+    # Duraciones para imágenes lentas
+    duracion_lenta_por_imagen = duracion_lenta_total / max(1, num_lentas)
+    duraciones_lentas = [duracion_lenta_por_imagen] * num_lentas
+
+    # Combinando las duraciones
+    duraciones = duraciones_rapidas + duraciones_lentas
+
     return duraciones
 
-def crear_video_barra_progreso(directorio_imagenes, archivo_porcentaje, archivo_salida_base, archivo_audio, duracion_inicial=0.05, duracion_final=0.3, fps=24):
+def crear_video_barra_progreso(directorio_imagenes, archivo_porcentaje, archivo_salida_base, archivo_audio, duracion_total=8, fps=24):
     # Leer el último porcentaje del archivo
     print(f"Archivo porcentaje: {archivo_porcentaje}")
     ultimo_porcentaje = leer_ultimo_porcentaje(archivo_porcentaje)
@@ -39,7 +52,7 @@ def crear_video_barra_progreso(directorio_imagenes, archivo_porcentaje, archivo_
         print(f"Imagen encontrada: {img}")
     
     # Calcular duraciones progresivas para cada imagen
-    duraciones = calcular_duraciones_progresivas(len(imagenes), duracion_inicial, duracion_final)
+    duraciones = calcular_duraciones_progresivas(len(imagenes), duracion_total)
     
     # Crear el video a partir de la secuencia de imágenes y duraciones
     clips = [ImageSequenceClip([img], durations=[dur]) for img, dur in zip(imagenes, duraciones)]
