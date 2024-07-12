@@ -39,10 +39,5 @@ Este proyecto utiliza un script de Python para generar y subir tweets automátic
 <br>
 <br>
 
-[![Ejemplo de Video Generado](https://github.com/AlanJimenez353/YearPorcetageTwitterBot/blob/master/Resources/gitResources/video_porcentaje.mp4)](https://github.com/AlanJimenez353/YearPorcetageTwitterBot/raw/master/Resources/gitResources/video_porcentaje.mp4)
-
-<br>
-<br>
-
-*Haz clic en la imagen para descargar el video generado por el script.*
+[Video Generado por el Script](https://x.com/Progreso2024i/status/1811824905035391363)
 
