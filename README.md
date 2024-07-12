@@ -13,16 +13,16 @@ Este proyecto utiliza un script de Python para generar y subir tweets automátic
 
 
 ## Capturas de Pantalla
-![Cuenta de X](https://github.com/AlanJimenez353/TwitterBot-LegoIA/blob/master/Resources/gitResources/Account.png)
+![Cuenta de X](https://github.com/AlanJimenez353/YearPorcetageTwitterBot/blob/master/Resources/gitResources/Account.png)
 <br>
 *Cuenta de X donde se sube el contenido*
 
-![Ejemplo de Imagen generada](https://github.com/AlanJimenez353/TwitterBot-LegoIA/blob/master/Resources/gitResources\barra_de_carga_50.png)
+![Ejemplo de Imagen generada](https://github.com/AlanJimenez353/YearPorcetageTwitterBot/blob/master/Resources/gitResources\barra_de_carga_50.png)
 <br>
 *Imagen generada por el script*
 
 
-![Ejemplo de Video Generado](https://github.com/AlanJimenez353/TwitterBot-LegoIA/blob/master/Resources/gitResources\video_porcentaje.mp4)
+![Ejemplo de Video Generado](https://github.com/AlanJimenez353/YearPorcetageTwitterBot/blob/master/Resources/gitResources\video_porcentaje.mp4)
 <br>
 *video generado por el script*
 
