@@ -17,7 +17,7 @@ Este proyecto utiliza un script de Python para generar y subir tweets automátic
 <br>
 *Cuenta de X donde se sube el contenido*
 
-![Ejemplo de Imagen generada](https://github.com/AlanJimenez353/YearPorcetageTwitterBot/blob/master/Resources/gitResources\barra_de_carga_50.png)
+![Ejemplo de Imagen generada](https://github.com/AlanJimenez353/YearPorcetageTwitterBot/blob/master/Resources/gitResources/barra_de_carga_50.png)
 <br>
 *Imagen generada por el script*
 
