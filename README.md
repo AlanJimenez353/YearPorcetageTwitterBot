@@ -2,6 +2,7 @@
 
 ## Descripción
 Este proyecto utiliza un script de Python para generar y subir tweets automáticamente cada vez que avanza el porcentaje del año en un 1%.
+<br>
 [Sigue el Progreso del Año 2024 en Twitter](https://x.com/Progreso2024)
 
 ## Características
@@ -12,7 +13,7 @@ Este proyecto utiliza un script de Python para generar y subir tweets automátic
 
 
 ## Capturas de Pantalla
-![Cuenta de X](https://github.com/AlanJimenez353/TwitterBot-LegoIA/blob/master/Resources/gitResources\Account.png)
+![Cuenta de X](https://github.com/AlanJimenez353/TwitterBot-LegoIA/blob/master/Resources/gitResources/Account.png)
 <br>
 *Cuenta de X donde se sube el contenido*
 
